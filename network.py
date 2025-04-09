@@ -52,17 +52,6 @@ class SLR_layer(nn.Module):
 # ***********
 
 
-# class GaussianNoise(nn.Module):
-#     def __init__(self, sigma=1.0):
-#         super().__init__()
-#         self.sigma = sigma
-#         self.noise = torch.tensor(0.0).cuda()
-
-#     def forward(self, x):
-#         if self.training:
-#             sampled_noise = self.noise.repeat(*x.size()).normal_(mean=0, std=self.sigma)
-#             x = x + sampled_noise
-#         return x
 
 def GaussianNoise(x, sigma = 1.0):
     noise = torch.tensor(0.0).cuda()
@@ -70,77 +59,6 @@ def GaussianNoise(x, sigma = 1.0):
     x = x + sampled_noise
     return x
 
-# class DFN(nn.Module):
-#   def __init__(self, input_size, hidden_size, use_bottleneck=True, bottleneck_dim=100, radius=10.0, class_num=1000):
-#     super(DFN, self).__init__()
-
-#     # For SEED and SEED-IV data
-#     input_size = input_size
-#     hidden_size = hidden_size
-
-#     # ++ FEATURE EXTRACTOR ++
-#     #fc1.weight.data.normal_(0, 0.01)
-#     self.feature_extractor = nn.Sequential(
-#         nn.Linear(input_size, hidden_size),
-#         nn.BatchNorm1d(hidden_size, momentum=0.1, affine=False),
-#         nn.ReLU(),
-#         nn.Dropout(p=0.5),
-#         nn.Flatten(),
-#         GaussianNoise(1.0)
-#     )
-
-#     # set
-#     self.use_bottleneck = use_bottleneck
-
-#     self.bottleneck_fc = nn.Linear(hidden_size, bottleneck_dim)
-#     self.bottleneck = nn.Sequential(
-#         self.bottleneck_fc,
-#         nn.BatchNorm1d(bottleneck_dim, momentum=0.1, affine=False),
-#         nn.ReLU(),
-#         nn.Dropout(p=0.5)
-#     )
-
-#     # layer for SLR layer
-#     self.fc = SLR_layer(bottleneck_dim, class_num)
-
-#     # init weights for bottleneck layer
-#     self.bottleneck_fc.apply(init_weights)
-#     self.__in_features = bottleneck_dim
-
-
-#     self.radius = radius
-
-
-#   def forward(self, x):
-
-#       # flatten
-#       x = x.view(x.size(0), -1)
-
-#       # apply feature extractor
-#       x = self.feature_extractor(x)
-
-#       # apply bottleneck
-#       x = self.bottleneck(x)
-
-#       # apply norm
-#       x = self.radius * x / (torch.norm(x, dim=1, keepdim=True) + 1e-10)
-
-#       # SLR layer
-#       y = self.fc(x)
-
-#       return x, y
-
-#   def output_num(self):
-#     return self.__in_features
-
-#   def get_parameters(self):
-#       # return the parameters of the deep neural network
-#       parameter_list = [{"params": self.feature_extractor.parameters(), "lr_mult": 1, 'decay_mult': 2}, \
-#                         {"params": self.bottleneck.parameters(), "lr_mult": 1, 'decay_mult': 2}, \
-#                         {"params": self.fc.parameters(), "lr_mult": 1, 'decay_mult': 2}]
-
-#       return parameter_list
-  
   
 
 class DFN(nn.Module):
@@ -177,15 +95,7 @@ class DFN(nn.Module):
         self.radius = radius
         self.fc = SLR_layer(bottleneck_dim, class_num)
     def forward(self, x):
-        x = x.view(x.size(0), -1)
-        if self.training:
-            x = GaussianNoise(x, sigma=1.0)
-        # if self.training:
-        #     x = GaussianNoise(x,0.5)
-        x = self.feature_extractor(x)
-        x = self.bottleneck(x)
-        x = self.radius * x / (torch.norm(x, dim=1, keepdim=True) + 1e-10)
-        y = self.fc(x)
+        ####### update #############
         return x, y
     
     def output_num(self):
