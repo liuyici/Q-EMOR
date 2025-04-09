@@ -10,5 +10,4 @@ You can find at: https://bcmi.sjtu.edu.cn/home/seed/seed.html and https://bcmi.s
 After you download the qnn resource package and dataset, run the main.py file in the terminal.
 
 If you want get some help about how to run this code,
-
 this is way: 230238579@seu.edu.cn
