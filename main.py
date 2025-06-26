@@ -1,12 +1,6 @@
-# Multi-source Feature Alignment and Label Rectification (MFA-LR)
-# Author:   Magdiel Jiménez-Guarneros
-# Article:  Jiménez-Guarneros Magdiel, Fuentes-Pineda Gibran (2023). Learning a Robust Unified Domain Adaptation
-#           Framework for Cross-subject EEG-based Emotion Recognition. Biomedical Signal Processing and Control.
-# Python 3.6, Pytorch 1.9.0+cu102
 
 import argparse
-from solvers import MFA_LR, RSDA
-from gaussian_uniform.weighted_pseudo_list import make_weighted_pseudo_list
+from solvers import Q_EMO, FunEing
 import os
 import numpy as np
 import random
@@ -21,7 +15,7 @@ def main(args):
         args.target = 15 - i # i+ 1
         print("当前的目标域是",args.target)
     # [Multi-source Feature Alignment (MFA)]
-        X, Y, acc_pre, f1_pre, auc_pre, mat_pre, model, log_loss = MFA_LR(args)
+        X, Y, acc_pre, f1_pre, auc_pre, mat_pre, model, log_loss = Q_EMO(args)
     
         args.test_interval = 50
         # [Label rectification: RSDA]
@@ -30,11 +24,10 @@ def main(args):
             print('\n\n########### stage : {:d}th ##############\n\n'.format(stage+1))
             args.log_file.write('\n\n########### stage : {:d}th    ##############'.format(stage+1))
             
-            # assign pseudo-labels
-            # samples, weighted_pseu_label, weights = make_weighted_pseudo_list(X, Y, args, model)
+
     
             # [single-source domain adaptation]
-            acc_final, f1_final, auc_final, mat, model = RSDA(X, Y, model, args)
+            acc_final, f1_final, auc_final, mat, model = FunEing(X, Y, model, args)
             acc.append(acc_final)
             print('这个人的准确率：', acc)
     print('15个人的准确率：', acc)
