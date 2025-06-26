@@ -1,4 +1,4 @@
-# Q-EMO
+# Q-EMOR
 Q-EMOR: Quaternion Neural Framework for Cross-Subject EEG Emotion Recognition
 This paper is currently under review by ECAI 2025.
 
