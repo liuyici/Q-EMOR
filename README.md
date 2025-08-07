@@ -1,7 +1,7 @@
 # Q-EMOR
-Q-EMOR: Quaternion Neural Framework for Cross-Subject EEG Emotion Recognition
+Q-EMOR: Quaternion-Based Cross-Subject EEG Emotion Recognition with Channel-Masked Autoencoders
 
-This paper is currently under review by ECAI 2025.
+This paper is currently under review by TAC.
 
 Quaternion Neural Networks (QNN) resource package needs to be downloaded here: https://github.com/Orkis-Research/Pytorch-Quaternion-Neural-Networks
 
